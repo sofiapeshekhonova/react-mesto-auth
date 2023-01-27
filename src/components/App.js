@@ -69,7 +69,7 @@ function App() {
     .then((data) => {
       localStorage.setItem("jwt", data.token);
       isloggedIn(true);
-      navigate('/',{replace: true});
+      navigate('/react-mesto-auth',{replace: true});
     })
     .catch((res) => {
       if(res === 'Ошибка 401') {
@@ -95,7 +95,7 @@ function App() {
         if (res){
           isloggedIn(true); // авторизуем пользователя
           setUserEmail(res.data.email) //получаем данные пользователя
-          navigate("/", {replace: true})
+          navigate("/react-mesto-auth", {replace: true})
         }
       });
     }
@@ -282,9 +282,10 @@ function App() {
           <Route path="/sign-in" element={
             <Login login={handelLoginClick}/>}>
            </Route>
-           <Route path="/" element={
+           <Route path="/react-mesto-auth" element={
             <ProtectedRouteElement 
               component={Main}
+              loggedIn={loggedIn}
               onEditAvatar={handleEditAvatarClick}
               onEditProfile={handleEditProfileClick}
               onAddPlace={handleAddPlaceClick}
@@ -292,7 +293,7 @@ function App() {
               cards={cards}
               onClickCardDelete={handleConfimCardDelete}
               onCardLike={handleCardLike}
-              loggedIn={loggedIn}/>}    
+              />}    
             />
         </Routes>
         <Footer />

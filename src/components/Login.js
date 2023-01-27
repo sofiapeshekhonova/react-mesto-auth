@@ -1,27 +1,9 @@
-import {React, useState} from "react";
+import ValidationForm from "../hooks/ValidationForm";
 import LoginAndRegisterForm from "./LoginAndRegisterForm";
 
 function Login({login}) {
 
-  const [errors, setErrors] = useState({});
-  const [formValue, setFormValue] = useState({
-    email: "",
-    password: "",
-  });
-
-  function handleChange(e) {
-    const {name, value} = e.target;
-
-    setFormValue({
-      ...formValue,
-      [name]: value,
-    });
-
-    setErrors({
-      ...errors,
-      [name]: e.target.validationMessage,
-    });
-  }
+  const {handleChange, errors, formValue } = ValidationForm();
 
   function handelSubmit(e) {
     e.preventDefault();

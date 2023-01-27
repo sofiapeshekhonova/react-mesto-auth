@@ -1,28 +1,11 @@
-import React from "react";
+
 import {Link} from "react-router-dom";
-import {useState} from "react";
 import LoginAndRegisterForm from "./LoginAndRegisterForm";
+import ValidationForm from "../hooks/ValidationForm";
 
 function Register({register}) {
 
-  const [errors, setErrors] = useState({});
-  const [formValue, setFormValue] = useState({
-    email: "",
-    password: "",
-  });
-
-  const handleChange = (e) => {
-    const {name, value} = e.target;
-    setFormValue({
-      ...formValue,
-      [name]: value,
-    });
-
-    setErrors({
-      ...errors,
-      [name]: e.target.validationMessage,
-    });
-  };
+  const {handleChange, errors, formValue } = ValidationForm();
 
   function handelSubmit(e) {
     e.preventDefault();
@@ -62,6 +45,7 @@ function Register({register}) {
             value={formValue.password || ''}
             onChange={handleChange}
             minLength="4"
+            required
           />
           <span className={"form__text-error_active"}>{errors.password}</span>
         </LoginAndRegisterForm>
