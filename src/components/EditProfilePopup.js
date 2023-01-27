@@ -1,75 +1,44 @@
 import PopupWithForm from "./PopupWithForm";
-import {useEffect, useState, useContext} from "react";
+import {useEffect, useContext} from "react";
 import {CurrentUserContext} from "../contexts/CurrentUserContext";
+import ValidationForm from "../hooks/ValidationForm";
 
-function EditProfilePopup(props) {
-  const [name, setName] = useState("");
-  const [description, setDescription] = useState("");
+function EditProfilePopup({onUpdateUser, isOpen, isLoading, onClose}) {
   // Подписка на контекст
   const currentUser = useContext(CurrentUserContext);
-
-  const [isValidInputName, setIsValidInputName] = useState(true);
-  const [nameErrorMessage, setNameErrorMessage] = useState("");
-  const [isValidInputDescription, setIsInputDescriptionValid] = useState(true);
-  const [descriptionErrorMessage, setDescriptionErrorMessage] = useState("");
-
-  function handleNameChange(e) {
-    setName(e.target.value);
-    if (e.target.validity.valid) {
-      setNameErrorMessage("");
-      setIsValidInputName(true);
-    } else {
-      setNameErrorMessage(e.target.validationMessage);
-      setIsValidInputName(false);
-    }
-  }
-
-  function handleDescriptionChange(e) {
-    setDescription(e.target.value);
-    if (e.target.validity.valid) {
-      setDescriptionErrorMessage("");
-      setIsInputDescriptionValid(true);
-    } else {
-      setDescriptionErrorMessage(e.target.validationMessage);
-      setIsInputDescriptionValid(false);
-    }
-  }
+  const {handleChange, errors, formValue, setFormValue, setErrors, isValid} = ValidationForm();
 
   function handleSubmit(e) {
     e.preventDefault();
     // Передаём значения управляемых компонентов во внешний обработчик
-    props.onUpdateUser({
-      name,
-      about: description,
+    onUpdateUser({
+      name: formValue.name,
+      about: formValue.description,
     });
   }
 
   // После загрузки текущего пользователя из API его данные будут использованы в управляемых компонентах.
   useEffect(() => {
-    setNameErrorMessage("");
-    setDescriptionErrorMessage("");
-    setIsValidInputName(true);
-    setIsInputDescriptionValid(true);
-    if (props.isOpen) {
-      setName(currentUser.name);
-      setDescription(currentUser.about);
+    setErrors("")
+    if (isOpen) {
+      setFormValue({...formValue, 'name': currentUser.name, 'description': currentUser.about})
     }
-  }, [props.isOpen, currentUser]);
+  }, [isOpen, currentUser]);
 
   return (
     <PopupWithForm
-      disabled={!(nameErrorMessage === "" && descriptionErrorMessage === "")}
+      disabled={!isValid}
       name="profile"
       title={"Редактировать профиль"}
-      buttonText={props.isLoading ? `Сохранение...` : `Сохранить`}
-      isOpen={props.isOpen}
+      buttonText={isLoading ? `Сохранение...` : `Сохранить`}
+      isOpen={isOpen}
       onSubmit={handleSubmit}
-      onClose={props.onClose}
+      onClose={onClose}
     >
       <input
         id="name-input"
-        value={name || ''}
-        onChange={handleNameChange}
+        value={formValue.name || ''}
+        onChange={handleChange}
         type="text"
         className="form__text form__text_type_name"
         name="name"
@@ -78,11 +47,11 @@ function EditProfilePopup(props) {
         minLength="2"
         maxLength="40"
       />
-      <span className={isValidInputName ? "form__text-error" : "form__text-error_active" }>{nameErrorMessage}</span>
+      <span className="form__text-error_active">{errors.name}</span>
       <input
         id="job-input"
-        value={description || ''} 
-        onChange={handleDescriptionChange}
+        value={formValue.description || ''} 
+        onChange={handleChange}
         type="text"
         className="form__text form__text_type_job"
         name="description"
@@ -91,7 +60,7 @@ function EditProfilePopup(props) {
         minLength="4"
         maxLength="200"
       />
-      <span className={isValidInputDescription ? "form__text-error" : "form__text-error_active"}>{descriptionErrorMessage}</span>
+      <span className="form__text-error_active">{errors.description}</span>
     </PopupWithForm>
   );
 }
