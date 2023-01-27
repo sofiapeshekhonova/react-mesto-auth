@@ -14,8 +14,8 @@ import Login from "./Login";
 import Register from "./Register";
 import { Routes, Route, useNavigate } from 'react-router-dom';
 import ProtectedRouteElement from "./ProtectedRoute";
-import { register, login} from "./Auth";
-import * as auth from './Auth';
+import { register, login} from "../utils/Auth";
+import * as auth from '../utils/Auth';
 
 function App() {
   const [isOpenAvatarPopup, setIsOpenAvatarPopup] = useState(false);
@@ -50,9 +50,7 @@ function App() {
           status: true,
           text: "Вы успешно зарегистрировались!",
         });
-        setOpenInfoTooltip(true)
         navigate('/sign-in', {replace: true})
-           
       }
     })
     .catch(() => {
@@ -60,8 +58,8 @@ function App() {
         status: false,
         text: "Что-то пошло не так! Попробуйте ещё раз.",
       });
-      setOpenInfoTooltip(true);
-    });
+    })
+    .finally(()=>setOpenInfoTooltip(true))
   }
 
   function handelLoginClick(password, email) {
@@ -70,6 +68,7 @@ function App() {
       localStorage.setItem("jwt", data.token);
       isloggedIn(true);
       navigate('/react-mesto-auth',{replace: true});
+      setUserEmail(data.data.email)
     })
     .catch((res) => {
       if(res === 'Ошибка 401') {
@@ -91,18 +90,23 @@ function App() {
   // если у пользователя есть токен в localStorage,эта функция проверит валидность токена
     const jwt = localStorage.getItem('jwt');
     if (jwt){    // проверим токен
-      auth.checkToken(jwt).then((res) => {
+      auth.checkToken(jwt)
+      .then((res) => {
         if (res){
           isloggedIn(true); // авторизуем пользователя
           setUserEmail(res.data.email) //получаем данные пользователя
           navigate("/react-mesto-auth", {replace: true})
         }
-      });
+      })
+      .catch((err) => {
+        console.log(err);
+      })
     }
   }, [])
 
   useEffect(() => {
-    Promise.all([api.getUserInfo(), api.getInitialCards()])
+    if(isloggedIn) {
+      Promise.all([api.getUserInfo(), api.getInitialCards()])
       .then(([user, cards]) => {
         setCurrentUser(user);
         setCards(cards);
@@ -110,7 +114,8 @@ function App() {
       .catch((err) => {
         console.log(err);
       });
-  }, []);
+    }
+  }, [isloggedIn]);
 
   function handleUpdateUser(value) {
     setIsLoading(true);
