@@ -4,10 +4,10 @@
 Ознакомится с проектом: [GH-pages](https://sofiapeshekhonova.github.io/react-mesto-auth/)
 <div align="left">
   <a href="https://sofiapeshekhonova.github.io/react-mesto-auth/">
-    <img src="https://github.com/sofiapeshekhonova/react-mesto-auth/blob/main/src/images/login.gif?raw=true" width="450" height="350" alt="запись экрана проекта">
+    <img src="https://github.com/sofiapeshekhonova/react-mesto-auth/blob/main/src/images/login.gif?raw=true" width="500" alt="запись экрана проекта">
   <a>
     <a href="https://sofiapeshekhonova.github.io/mesto-react/">
-    <img src="https://github.com/sofiapeshekhonova/mesto-react/blob/main/src/images/gif.gif?raw=true" width="450" height="350" alt="запись экрана проекта">
+    <img src="https://github.com/sofiapeshekhonova/mesto-react/blob/main/src/images/gif.gif?raw=true" width="500" alt="запись экрана проекта">
   <a>
 </div>
 
