@@ -75,7 +75,7 @@ function App() {
         setOpenInfoTooltip(true);
         isregisterResponse({
           status: false,
-          text: "Вы не зарегестрированны",
+          text: "Аккаунт не зарегистрирован",
         });
       } else if(!res) {
         isregisterResponse({
