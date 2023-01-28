@@ -269,7 +269,8 @@ function App() {
   
   function signOut() {
     localStorage.removeItem('jwt');
-   navigate('/sign-in')
+    navigate('/sign-in');
+    setIsActiveBurger(false)
   }
 
   return (
