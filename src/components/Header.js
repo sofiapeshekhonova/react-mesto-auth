@@ -4,7 +4,7 @@ import {Route, Link, Routes } from 'react-router-dom';
 function Header({userEmail, signOut, openPopupBurger, isActiveBurger}) {
 
    return (
-    <header className={isActiveBurger && "header__userElements_active" ? "header header_active" : "header"}>
+    <header className={isActiveBurger ? "header header_active" : "header"}>
     <img className="header__logo" src={logoMesto} alt="логотип место россия" />
     <Routes>
       <Route path="/sign-up" element={
