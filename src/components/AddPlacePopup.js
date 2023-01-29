@@ -37,7 +37,7 @@ function AddPlacePopup({isLoading, isOpen, onClose, onAddCard}) {
         value={formValue.name || ''}
         onChange={handleChange}
         type="text"
-        className="form__text form__text_type_place-name"
+        className={!errors.name ? "form__text" : "form__text form__text_error"}
         name="name"
         placeholder="Название"
         required
@@ -50,7 +50,7 @@ function AddPlacePopup({isLoading, isOpen, onClose, onAddCard}) {
         value={formValue.placeLink || ''}
         onChange={handleChange}
         type="url"
-        className="form__text form__text_type_place-link"
+        className={!errors.placeLink ? "form__text" : "form__text form__text_error"}
         name="placeLink"
         placeholder="Ссылка на картинку"
         required

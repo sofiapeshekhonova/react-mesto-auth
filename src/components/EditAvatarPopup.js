@@ -35,7 +35,7 @@ function EditAvatarPopup({isOpen, onUpdateAvatar, onClose, isLoading}) {
         id="avatar-input"
         ref={inputRef}
         type="url"
-        className="form__text form__text_type_avatar"
+        className={!errors.avatar ? "form__text" : "form__text form__text_error"}
         name="avatar"
         placeholder="Ссылка на картинку"
         required

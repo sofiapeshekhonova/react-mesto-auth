@@ -16,6 +16,7 @@ import { Routes, Route, useNavigate } from 'react-router-dom';
 import ProtectedRouteElement from "./ProtectedRoute";
 import { register, login} from "../utils/Auth";
 import * as auth from '../utils/Auth';
+import Loading from "./Loading";
 
 function App() {
   const [isOpenAvatarPopup, setIsOpenAvatarPopup] = useState(false);
@@ -27,15 +28,16 @@ function App() {
   const [cards, setCards] = useState([]);
   const [currentUser, setCurrentUser] = useState({});
   const [isLoading, setIsLoading] = useState(false);
-  const [isOpenInfoTooltip, setOpenInfoTooltip] = useState(false)
-  const [loggedIn, isloggedIn] = useState(false)
+  const [isOpenInfoTooltip, setOpenInfoTooltip] = useState(false);
+  const [loggedIn, isloggedIn] = useState(false);
   const [registerResponse, isregisterResponse]  = useState({
     status: false,
     text: "",
   });
   const navigate = useNavigate();
-  const [userEmail, setUserEmail] = useState("")
-  const [isActiveBurger, setIsActiveBurger] = useState(false)
+  const [userEmail, setUserEmail] = useState("");
+  const [isActiveBurger, setIsActiveBurger] = useState(false);
+  const [pageLoading, setPageloading] = useState(true);
 
   function openPopupBurger(e) {
     e.preventDefault();
@@ -68,7 +70,7 @@ function App() {
       localStorage.setItem("jwt", data.token);
       isloggedIn(true);
       navigate('/react-mesto-auth',{replace: true});
-      setUserEmail(data.data.email)
+      setUserEmail(email)
     })
     .catch((res) => {
       if(res === 'Ошибка 401') {
@@ -106,6 +108,7 @@ function App() {
 
   useEffect(() => {
     if(isloggedIn) {
+      setPageloading(true);
       Promise.all([api.getUserInfo(), api.getInitialCards()])
       .then(([user, cards]) => {
         setCurrentUser(user);
@@ -113,7 +116,8 @@ function App() {
       })
       .catch((err) => {
         console.log(err);
-      });
+      })
+      .finally(() => setPageloading(false))
     }
   }, [isloggedIn]);
 
@@ -288,19 +292,24 @@ function App() {
           <Route path="/sign-in" element={
             <Login login={handelLoginClick}/>}>
            </Route>
-           <Route path="/react-mesto-auth" element={
-            <ProtectedRouteElement 
-              component={Main}
-              loggedIn={loggedIn}
-              onEditAvatar={handleEditAvatarClick}
-              onEditProfile={handleEditProfileClick}
-              onAddPlace={handleAddPlaceClick}
-              onCardClick={handleCardClick}
-              cards={cards}
-              onClickCardDelete={handleConfimCardDelete}
-              onCardLike={handleCardLike}
-              />}    
-            />
+           
+          <Route path="/react-mesto-auth" element={
+            <>
+              {pageLoading ?  <Loading/>:  
+                <ProtectedRouteElement 
+                  component={Main}
+                  loggedIn={loggedIn}
+                  onEditAvatar={handleEditAvatarClick}
+                  onEditProfile={handleEditProfileClick}
+                  onAddPlace={handleAddPlaceClick}
+                  onCardClick={handleCardClick}
+                  cards={cards}
+                  onClickCardDelete={handleConfimCardDelete}
+                  onCardLike={handleCardLike}
+                />
+              }
+            </>
+          }/> 
         </Routes>
         <Footer />
 

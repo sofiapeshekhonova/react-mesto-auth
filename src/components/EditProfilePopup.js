@@ -40,7 +40,7 @@ function EditProfilePopup({onUpdateUser, isOpen, isLoading, onClose}) {
         value={formValue.name || ''}
         onChange={handleChange}
         type="text"
-        className="form__text form__text_type_name"
+        className={!errors.name ? "form__text" : "form__text form__text_error"}
         name="name"
         placeholder="введите имя"
         required
@@ -53,7 +53,7 @@ function EditProfilePopup({onUpdateUser, isOpen, isLoading, onClose}) {
         value={formValue.description || ''} 
         onChange={handleChange}
         type="text"
-        className="form__text form__text_type_job"
+        className={!errors.description ? "form__text" : "form__text form__text_error"}
         name="description"
         placeholder="введите работу"
         required

@@ -15,6 +15,7 @@
 .login__button_inactive {
   background-color: rgb(107, 105, 105);
   color: rgb(154, 147, 147);
+  pointer-events: none;
 }
 
 @media screen and (max-width: 528px) {
