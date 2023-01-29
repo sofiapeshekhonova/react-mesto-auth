@@ -18,3 +18,7 @@
     padding-bottom: 9px;
   }
 }
+
+.form__input_errors{
+  border-bottom: 2px solid #ff0505;
+}

@@ -25,7 +25,7 @@ function Register({register}) {
         >
           <input
             id="email"
-            className="form__input"
+            className={!errors.email ? "form__input" : "form__input form__input_errors"}
             name="email"
             type="email"
             placeholder="Email"
@@ -41,7 +41,7 @@ function Register({register}) {
             name="password"
             type="password"
             placeholder="Пароль"
-            className="form__input"
+            className={!errors.password ? "form__input" : "form__input form__input_errors"}
             value={formValue.password || ''}
             onChange={handleChange}
             minLength="4"
