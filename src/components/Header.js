@@ -11,7 +11,7 @@ function Header({userEmail, signOut, openPopupBurger, isActiveBurger}) {
         <Link to={"/sign-in"} className="header__navLink header__navLink_active">Войти</Link>}/>
       <Route path="/sign-in" element={
         <Link to={"/sign-up"} className="header__navLink header__navLink_active">Регистрация</Link>}/>
-      <Route path="/react-mesto-auth" element={
+      <Route path="/" element={
         <>
         <div className={isActiveBurger ? "header__userElements_active" : "header__userElements"}>
           <p className='header__userElements-email'>{userEmail}</p>
