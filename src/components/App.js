@@ -104,7 +104,7 @@ function App() {
         console.log(err);
       })
     }
-  }, [])
+  }, [navigate])
 
   useEffect(() => {
     if(isloggedIn) {
@@ -274,7 +274,9 @@ function App() {
   function signOut() {
     localStorage.removeItem('jwt');
     navigate('/sign-in');
-    setIsActiveBurger(false)
+    setIsActiveBurger(false);
+    isloggedIn(false); 
+    setUserEmail('');
   }
 
   return (
